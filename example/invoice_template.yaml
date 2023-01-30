@@ -1,0 +1,129 @@
+styles:
+  title:
+    font:
+      name: Helvetica-Bold
+      size: 40
+    spacing: 1
+
+  address:
+    font:
+      name: Helvetica
+      size: 15
+    spacing: .2
+
+  mini-title:
+    font:
+      name: Helvetica-Bold
+      size: 15
+    spacing: .35
+
+  table-item:
+    font:
+      name: Helvetica
+      size: 15
+    spacing: .5
+
+
+elements:
+  - type: text
+    position: [ .5, -1 ]
+    content: INVOICE
+    style: title
+
+  - type: multiline-text
+    position: [ .5, -1.5 ]
+    content: Jimbo Jones Pet Grooming\n6541 Northwood Road\nJonesville, MT 67163
+    style: address
+
+  - type: text
+    position: [ .5, -2.55 ]
+    content: BILL TO
+    style: mini-title
+
+  - type: multiline-text
+    variable-id: billing
+    position: [ .5, -2.8 ]
+    style: address
+
+  - type: text
+    position: [ -2.25, -1.5 ]
+    content: 'Invoice #'
+    style: mini-title
+
+  - type: text
+    variable-id: invoice_no
+    position: [ -.5, -1.5 ]
+    style: address
+    justification: right
+
+  - type: text
+    position: [ -2.25, -2 ]
+    content: Date
+    style: mini-title
+
+  - type: date
+    position: [ -.5, -2 ]
+    style: address
+    justification: right
+
+  - type: text
+    content: Due
+    position: [ -2.25, -2.5 ]
+    style: mini-title
+
+
+  - type: horizontal-rule
+    position: [ 0,-4 ]
+    justification: center
+    width: 7.5
+    stroke: 1
+    color: [ .2,.2,.2 ]
+
+  - type: date
+    variable-id: due_date
+    position: [ -.5, -2.5 ]
+    style: address
+    justification: right
+
+  - type: table
+    variable-id: products
+    elements:
+      - type: text
+        variable-id: type
+        style: table-item
+        position: [ .5, -4.5 ]
+      - type: money
+        variable-id: cost
+        style: table-item
+        position: [ -1.2, -4.5 ]
+        justification: left
+    divider:
+      type: horizontal-rule
+      width: 7.5
+      stroke: .5
+      color: [ .3,.3,.3 ]
+      justification: center
+
+  - type: text
+    position: [ -2.25, 2.5 ]
+    content: 'Total'
+    style: mini-title
+
+  - type: money
+    position: [ -.5, 2.5 ]
+    variable-id: total
+    style: address
+    format: '${:.2f}'
+    justification: right
+
+  - type: text
+    position: [ -2.25, 2 ]
+    content: 'Due'
+    style: mini-title
+
+  - type: money
+    position: [ -.5, 2 ]
+    variable-id: due_amount
+    style: address
+    format: '${:.2f}'
+    justification: right
