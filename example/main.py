@@ -12,7 +12,8 @@ if __name__ == '__main__':
     products_sold = {k: [str(i) for i in list(v.values())] for k, v in data.items()}
     total = sum([float(it) for it in products_sold['cost']])
 
-    form('example/test.pdf', 'example/invoice_template.yaml', billing='Sam Joe\\n1345 Woodpecker Driver\\nJonesville, MT 67163',
+    form('example/test.pdf', 'example/invoice_template.yaml',
+         billing='Sam Joe\\n1345 Woodpecker Driver\\nJonesville, MT 67163',
          invoice_no='0x00f4',
          due_date=(datetime.now() + timedelta(days=14)).timestamp(),
          products=products_sold, total=total,
