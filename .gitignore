@@ -2,3 +2,10 @@
 .idea/
 
 __pycache__/
+
+dist/
+
+build/
+.pytest_cache/
+
+yaml_to_pdf.egg-info/

@@ -1,10 +1,9 @@
 import datetime
 import os.path
 
-import reportlab
 import yaml
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter, inch
+from reportlab.pdfgen import canvas
 
 width, height = letter
 
@@ -52,11 +51,11 @@ def form(path: str, template: [dict | str], **kwargs):
     kwargs.update(split_arguments)
 
     # Split tables into their smaller elements
-    for element in template['elements']:
-        if element['type'] != 'table':
+    for table in template['elements']:
+        if table['type'] != 'table':
             continue
         # template['elements'] += i['elements']
-        for table_element in element['elements']:
+        for table_element in table['elements']:
             for i in range(len(kwargs[table_element['variable-id']])):
                 split_element = table_element.copy()
                 del split_element['variable-id']
@@ -65,14 +64,28 @@ def form(path: str, template: [dict | str], **kwargs):
                 split_element['content'] = kwargs[table_element['variable-id']][i]
                 template['elements'].append(split_element)
 
+            # Add headers
+            if 'headers' not in table.keys():
+                continue
+            header = {'type': table['headers']['type'],
+                      'style': table['headers']['style']}
+            header['position'] = table_element['position'].copy()
+            header['position'][1] += styles[table['headers']['style']].spacing
+            header_index = table['elements'].index(table_element)
+            if 'variable-id' in table['headers'].keys():
+                header['content'] = kwargs[table['headers']['variable-id']][header_index]
+            else:
+                header['content'] = table['headers']['content'][header_index]
+            template['elements'].append(header)
+
         # Add dividers
-        if 'divider' not in element.keys():
+        if 'divider' not in table.keys():
             continue
 
-        for index in range(0, len(list(kwargs[element['variable-id']].values())[0]) - 1):
-            master = element['elements'][0]
+        for index in range(0, len(list(kwargs[table['variable-id']].values())[0]) - 1):
+            master = table['elements'][0]
             master_style = styles[master['style']]
-            divider = dict(element['divider']).copy()
+            divider = dict(table['divider']).copy()
             divider['position'] = [0, master['position'][1] - (
                     master_style.spacing * index + (master_style.size / 72) - .0305555)]
             template['elements'].append(divider)
